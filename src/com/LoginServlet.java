@@ -50,7 +50,24 @@ public class LoginServlet extends HttpServlet {
 		String pass = request.getParameter("Password");
 		String userID = getServletConfig().getInitParameter("User");
 		String password = getServletConfig().getInitParameter("Pass");
+		String nameRegex = "^[A-Z]{1}.{2,}$";
+		String passRegex = "^(?=.*\\d)(?=.*[A-Z])(?=.*\\W)(?!.*\\W\\w*\\W)(?!.*\\s).{8,}$";
 		
+		//Username Regex
+		if (!username.matches(nameRegex)) {
+			RequestDispatcher reqD = getServletContext().getRequestDispatcher("/login.html");
+			PrintWriter out = response.getWriter();
+			out.println("<font color=red>Kindly Enter Correct USERNAME</font>");
+			reqD.include(request, response);
+		}
+		
+		//Password Regex
+		if (!password.matches(passRegex)) {
+			RequestDispatcher reqD = getServletContext().getRequestDispatcher("/login.html");
+			PrintWriter out = response.getWriter();
+			out.println("<font color=red>Kindly Enter Correct PASSWRD</font>");
+			reqD.include(request, response);
+		}
 		
 		if(username.equals(userID) && pass.equals(password)) {
 			request.setAttribute("User Name", username);
